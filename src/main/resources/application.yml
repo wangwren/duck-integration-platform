@@ -1,0 +1,75 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: duck-integration-platform
+  # ???????JDK 21 Loom??????????
+  threads:
+    virtual:
+      enabled: true
+  profiles:
+    active: local
+  # ?? JSON ?????????????????????
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  # ???????????????OSS ?????????????
+#  servlet:
+#    multipart:
+#      enabled: true
+#      max-file-size: 50MB
+#      max-request-size: 100MB
+
+# MyBatis-Plus ????
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml  # ? ?????? XML ??
+  type-aliases-package: com.duck.integration.entity
+  configuration:
+    map-underscore-to-camel-case: true           # ???????? ? ??????? false?
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # ???????? SQL??????? log-impl?????????????
+  global-config:
+    db-config:
+      id-type: AUTO
+      logic-delete-field: isDelete
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# SpringDoc + Knife4j
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: default
+      paths-to-match: '/**'
+      packages-to-scan: com.duck.integration.controller
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+# ????????????????????
+logging:
+  level:
+    root: info
+    com.duck.integration: debug
+    com.baomidou.dynamic.datasource: info
+    com.zaxxer.hikari: info
+
+# ???????????????????????
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
